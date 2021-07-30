@@ -7,21 +7,22 @@ const cloudflare = process.env.CLOUDFLARE === "true" || false;
 app.use(cors());
 
 app.get("/", (req, res) => {
-  let response = {
-    ip: req.socket.remoteAddress,
-  };
+	let response = {
+		ip: req.socket.remoteAddress,
+		country: null,
+	};
 
-  if (cloudflare) {
-    response.ip = req.header("CF-Connecting-IP");
-    response.country = req.header("CF-IPCountry");
-  }
+	if (cloudflare) {
+		response.ip = req.header("CF-Connecting-IP");
+		response.country = req.header("CF-IPCountry");
+	}
 
-  return res.json(response);
+	return res.json(response);
 });
 
 app.listen(port, () => {
-  console.log(`i app listening at http://localhost:${port}`);
-  if (cloudflare) {
-    console.log("! app behind Cloudflare");
-  }
+	console.log(`i app listening at http://localhost:${port}`);
+	if (cloudflare) {
+		console.log("! app behind Cloudflare");
+	}
 });
